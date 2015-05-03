@@ -46,7 +46,7 @@ var _ = Describe("garden-docker", func() {
 		Eventually(session).Should(gexec.Exit(0))
 	})
 
-	FIt("can be contacted via a NetIn-ed port", func() {
+	It("can be contacted via a NetIn-ed port", func() {
 		client = startGarden()
 
 		container, err := client.Create(garden.ContainerSpec{})

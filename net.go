@@ -5,6 +5,7 @@ import (
 	"net"
 
 	"github.com/cloudfoundry-incubator/garden"
+	"github.com/cloudfoundry-incubator/garden-linux/old/port_pool"
 	"github.com/cloudfoundry/gunk/localip"
 	"github.com/docker/docker/pkg/iptables"
 )
@@ -17,10 +18,23 @@ type Chain interface {
 type NetHandler struct {
 	ContainerIP string
 	Chain       Chain
+
+	PortPool *port_pool.PortPool
 }
 
 func (c *NetHandler) NetIn(hostPort, containerPort uint32) (uint32, uint32, error) {
 	externalIP, _ := localip.LocalIP()
+
+	if hostPort == 0 {
+		var err error
+		if hostPort, err = c.PortPool.Acquire(); err != nil {
+			return 0, 0, fmt.Errorf("netin: acquire port from pool: %s", err)
+		}
+	}
+
+	if containerPort == 0 {
+		containerPort = hostPort
+	}
 
 	if err := c.Chain.Forward(iptables.Add, net.ParseIP(externalIP), int(hostPort), "tcp", c.ContainerIP, int(containerPort)); err != nil {
 		return 0, 0, fmt.Errorf("netin %d to %d: %s", hostPort, containerPort, err)

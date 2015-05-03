@@ -8,6 +8,7 @@ import (
 
 	"github.com/cloudfoundry-incubator/cf-lager"
 	"github.com/cloudfoundry-incubator/garden-linux/old/logging"
+	"github.com/cloudfoundry-incubator/garden-linux/old/port_pool"
 	"github.com/cloudfoundry-incubator/garden/server"
 	"github.com/cloudfoundry/gunk/command_runner/linux_command_runner"
 	"github.com/docker/docker/pkg/iptables"
@@ -42,6 +43,18 @@ func main() {
 		"time after which to destroy idle containers",
 	)
 
+	portPoolStart := flag.Uint(
+		"portPoolStart",
+		61001,
+		"start of ephemeral port range used for mapped container ports",
+	)
+
+	portPoolSize := flag.Uint(
+		"portPoolSize",
+		5000,
+		"size of port pool used for mapped container ports",
+	)
+
 	cf_lager.AddFlags(flag.CommandLine)
 	flag.Parse()
 
@@ -64,7 +77,8 @@ func main() {
 			InitdPath:     initdPath,
 			Depot:         &gardendocker.ContainerDepot{Dir: *depotDir},
 
-			Chain: &iptables.Chain{"DOCKER", "docker0"},
+			Chain:    &iptables.Chain{"DOCKER", "docker0"},
+			PortPool: port_pool.New(uint32(*portPoolStart), uint32(*portPoolSize)),
 
 			DockerRunner:  &dockercli.Runner{runner},
 			CommandRunner: runner,

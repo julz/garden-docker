@@ -11,7 +11,7 @@ type FakeDepot struct {
 	CreateStub        func() (string, error)
 	createMutex       sync.RWMutex
 	createArgsForCall []struct{}
-	createReturns struct {
+	createReturns     struct {
 		result1 string
 		result2 error
 	}

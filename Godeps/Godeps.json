@@ -40,6 +40,10 @@
 			"Rev": "37187548b40784634a7a73797fc00cb4e032edd4"
 		},
 		{
+			"ImportPath": "github.com/cloudfoundry-incubator/garden-linux/old/port_pool",
+			"Rev": "37187548b40784634a7a73797fc00cb4e032edd4"
+		},
+		{
 			"ImportPath": "github.com/cloudfoundry-incubator/garden-linux/process_tracker",
 			"Rev": "37187548b40784634a7a73797fc00cb4e032edd4"
 		},

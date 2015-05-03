@@ -57,7 +57,12 @@ func (backend *Backend) Ping() error {
 }
 
 func (backend *Backend) Capacity() (garden.Capacity, error) {
-	return garden.Capacity{}, nil
+	// lies.
+	return garden.Capacity{
+		MemoryInBytes: 500000,
+		DiskInBytes:   500000,
+		MaxContainers: 1000,
+	}, nil
 }
 
 func (backend *Backend) Destroy(handle string) error {

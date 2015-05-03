@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/cloudfoundry-incubator/garden"
+	"github.com/cloudfoundry-incubator/garden-linux/old/port_pool"
 	"github.com/cloudfoundry-incubator/garden-linux/process_tracker"
 	"github.com/cloudfoundry/gunk/command_runner"
 	"github.com/docker/docker/pkg/iptables"
@@ -21,7 +22,8 @@ type DaemonContainerCreator struct {
 	DoshPath  string
 	InitdPath string
 
-	Chain *iptables.Chain
+	Chain    *iptables.Chain
+	PortPool *port_pool.PortPool
 
 	DockerRunner  DockerRunner
 	CommandRunner command_runner.CommandRunner
@@ -89,6 +91,7 @@ func (c *DaemonContainerCreator) Create(spec garden.ContainerSpec) (*Container, 
 		NetHandler: &NetHandler{
 			ContainerIP: ip,
 			Chain:       c.Chain,
+			PortPool:    c.PortPool,
 		},
 		RunHandler: &RunHandler{
 			ProcessTracker: process_tracker.New(dir, c.CommandRunner),
