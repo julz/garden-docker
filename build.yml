@@ -1,0 +1,10 @@
+---
+image: docker:///julz/gardendocker-ci
+
+platform: linux
+
+inputs:
+- name: garden-docker
+
+run:
+  path: garden-docker/script/test-in-concourse
