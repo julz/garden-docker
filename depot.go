@@ -37,7 +37,7 @@ func (depot *ContainerDepot) Create() (string, error) {
 		return "", fmt.Errorf("build iodaemon: %s", err)
 	}
 
-	doshPath, err := gexec.Build("github.com/julz/garden-docker/dosh")
+	doshPath, err := gexec.Build("github.com/julz/garden-docker/cmd/dosh")
 	if err != nil {
 		return "", fmt.Errorf("build dosh: %s", err)
 	}

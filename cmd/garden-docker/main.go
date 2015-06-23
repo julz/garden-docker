@@ -65,7 +65,7 @@ func main() {
 	}
 
 	os.Setenv("CGO_ENABLED", "0")
-	initdPath, err := gexec.Build("github.com/julz/garden-docker/initd", "-a", "-installsuffix", "static")
+	initdPath, err := gexec.Build("github.com/julz/garden-docker/cmd/initd", "-a", "-installsuffix", "static")
 	if err != nil {
 		panic(err)
 	}
